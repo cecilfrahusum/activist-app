@@ -9,6 +9,15 @@
         android:id="@+id/menuFragment"
         android:name="com.example.activist_app.MenuFragment"
         android:label="fragment_menu"
-        tools:layout="@layout/fragment_menu" />
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_talkieFragment"
+            app:destination="@id/talkieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/talkieFragment"
+        android:name="com.example.activist_app.TalkieFragment"
+        android:label="fragment_talkie"
+        tools:layout="@layout/fragment_talkie" />
 
 </navigation>
