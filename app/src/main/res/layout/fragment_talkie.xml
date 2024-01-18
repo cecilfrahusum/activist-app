@@ -3,13 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".TalkieFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/TalkieButton"
+        android:layout_width="152dp"
+        android:layout_height="152dp"
+        app:cornerRadius="76dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:text="Record"/>
 
 </FrameLayout>

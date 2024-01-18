@@ -11,6 +11,7 @@ import android.widget.Button;
 
 public class TalkieFragment extends Fragment {
 
+    private Button TalkieButton;
 
     public TalkieFragment() {
         // Required empty public constructor
@@ -24,6 +25,8 @@ public class TalkieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_talkie, container, false);
+
+        TalkieButton = v.findViewById(R.id.TalkieButton);
 
         return v;
     }
