@@ -11,7 +11,7 @@
         android:id="@+id/talkie"
         android:title="Walkie Talkie"
         android:enabled="true"
-        android:icon="@drawable/baseline_speaker_phone_24"/>
+        android:icon="@drawable/walkie_talkie_svgrepo_com" />
 
     <item
         android:id="@+id/chat"
