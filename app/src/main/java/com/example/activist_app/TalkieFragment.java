@@ -14,6 +14,8 @@ public class TalkieFragment extends Fragment {
 
     private Button recordButton;
     private Button sendButton;
+    private Button cancelButton;
+    private boolean recording = false;
 
     public TalkieFragment() {
         // Required empty public constructor
@@ -30,11 +32,12 @@ public class TalkieFragment extends Fragment {
 
         recordButton = v.findViewById(R.id.recordButton);
         sendButton = v.findViewById(R.id.sendButton);
+        cancelButton = v.findViewById(R.id.cancelButton);
 
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendButton.bringToFront();
+                switchButtons();
             }
         });
 
@@ -42,10 +45,33 @@ public class TalkieFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Your message was sent to everyone.", Toast.LENGTH_LONG).show();
-                recordButton.bringToFront();
+                switchButtons();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(), "Your message was deleted. Want to start over?", Toast.LENGTH_LONG).show();
+                switchButtons();
             }
         });
 
         return v;
+    }
+
+    private void switchButtons() {
+        if (recording == true) {
+            sendButton.setVisibility(View.VISIBLE);
+            cancelButton.setVisibility(View.VISIBLE);
+            recordButton.setVisibility(View.GONE);
+            recording = false;
+        } else {
+            // BUG: on first opening the app, this section only gets executed upon clicking twice.
+            recordButton.setVisibility(View.VISIBLE);
+            sendButton.setVisibility(View.GONE);
+            cancelButton.setVisibility(View.GONE);
+            recording = true;
+        }
     }
 }
