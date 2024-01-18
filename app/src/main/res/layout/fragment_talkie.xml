@@ -7,12 +7,31 @@
     tools:context=".TalkieFragment">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/TalkieButton"
-        android:layout_width="152dp"
-        android:layout_height="152dp"
-        app:cornerRadius="76dp"
+        android:id="@+id/sendButton"
+        android:layout_width="252dp"
+        android:layout_height="252dp"
+        app:cornerRadius="126dp"
         android:layout_gravity="center"
         android:layout_marginBottom="10dp"
-        android:text="Record"/>
+        android:backgroundTint="@color/green_button"
+        android:text="Send"
+        android:textAllCaps="false"
+        android:textSize="40dp"
+        android:textColor="@color/black" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/recordButton"
+        android:layout_width="252dp"
+        android:layout_height="252dp"
+        app:cornerRadius="126dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/blue_button"
+        android:text="Record"
+        android:textAllCaps="false"
+        android:textSize="40dp"
+        android:textColor="@color/black" />
+
+
 
 </FrameLayout>
