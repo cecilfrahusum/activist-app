@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,6 +35,9 @@ public class TalkieFragment extends Fragment {
         sendButton = v.findViewById(R.id.sendButton);
         cancelButton = v.findViewById(R.id.cancelButton);
 
+        // TODO: Fix bug: When opening the TalkieFragment, switchButtons() only gets
+        //  executed after clicking twice on recordButton. After initial execution
+        //  it it will execute on a single click.
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +71,6 @@ public class TalkieFragment extends Fragment {
             recordButton.setVisibility(View.GONE);
             recording = false;
         } else {
-            // BUG: on first opening the app, this section only gets executed upon clicking twice.
             recordButton.setVisibility(View.VISIBLE);
             sendButton.setVisibility(View.GONE);
             cancelButton.setVisibility(View.GONE);
