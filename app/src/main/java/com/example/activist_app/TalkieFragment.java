@@ -13,9 +13,10 @@ import android.widget.Toast;
 
 public class TalkieFragment extends Fragment {
 
-    private Button recordButton;
+
     private Button sendButton;
     private Button cancelButton;
+    private Button recordButton;
     private boolean recording = false;
 
     public TalkieFragment() {
@@ -31,19 +32,9 @@ public class TalkieFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_talkie, container, false);
 
-        recordButton = v.findViewById(R.id.recordButton);
         sendButton = v.findViewById(R.id.sendButton);
         cancelButton = v.findViewById(R.id.cancelButton);
-
-        // TODO: Fix bug: When opening the TalkieFragment, switchButtons() only gets
-        //  executed after clicking twice on recordButton. After initial execution
-        //  it it will execute on a single click.
-        recordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switchButtons();
-            }
-        });
+        recordButton = v.findViewById(R.id.recordButton);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +48,16 @@ public class TalkieFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getActivity(), "Your message was deleted. Want to start over?", Toast.LENGTH_LONG).show();
+                switchButtons();
+            }
+        });
+
+        // TODO: Fix bug: When opening the TalkieFragment, switchButtons() only gets
+        //  executed after clicking twice on recordButton. After initial execution
+        //  it it will execute on a single click.
+        recordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 switchButtons();
             }
         });

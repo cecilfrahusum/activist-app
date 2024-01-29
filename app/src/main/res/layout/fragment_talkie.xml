@@ -21,21 +21,6 @@
         android:visibility="gone"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/recordButton"
-        android:layout_width="252dp"
-        android:layout_height="252dp"
-        app:cornerRadius="126dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="150dp"
-        android:backgroundTint="@color/blue_button"
-        android:text="Record"
-        android:textAllCaps="false"
-        android:textSize="40dp"
-        android:textColor="@color/black"
-        android:visibility="visible"
-        />
-
-    <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelButton"
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -50,5 +35,22 @@
         android:textColor="@color/dark_grey"
         android:visibility="gone"
         />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/recordButton"
+        android:layout_width="252dp"
+        android:layout_height="252dp"
+        app:cornerRadius="126dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="150dp"
+        android:backgroundTint="@color/blue_button"
+        android:text="Record"
+        android:textAllCaps="false"
+        android:textSize="40dp"
+        android:textColor="@color/black"
+        android:visibility="visible"
+        />
+
+
 
 </LinearLayout>
