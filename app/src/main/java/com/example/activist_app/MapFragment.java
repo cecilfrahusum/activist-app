@@ -20,12 +20,13 @@ public class MapFragment extends Fragment {
     String googleApiKey = BuildConfig.GOOGLE_API_KEY;
 
     LatLng defaultPos = new LatLng(55.658619, 12.589548);
+    private final static int DEFAULT_ZOOM = 15;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultPos, 15));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultPos, DEFAULT_ZOOM));
         }
     };
 
