@@ -2,8 +2,12 @@ package com.example.activist_app;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +22,8 @@ import com.google.android.gms.maps.model.LatLng;
 public class MapFragment extends Fragment {
 
     String googleApiKey = BuildConfig.GOOGLE_API_KEY;
+
+    private PermissionsHandler permissionsHandler = new PermissionsHandler();
 
     LatLng defaultPos = new LatLng(55.658619, 12.589548);
     private final static int DEFAULT_ZOOM = 15;
