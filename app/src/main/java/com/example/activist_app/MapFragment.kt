@@ -26,8 +26,9 @@ import com.google.android.gms.maps.model.LatLng
 class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
 
     var googleApiKey = BuildConfig.GOOGLE_API_KEY
+
     var defaultPos = LatLng(55.658619, 12.589548) // ITU's location
-    var DEFAULT_ZOOM: Float = 15F
+    val DEFAULT_ZOOM: Float = 15F
 
     private lateinit var googleMaps: GoogleMap
 
