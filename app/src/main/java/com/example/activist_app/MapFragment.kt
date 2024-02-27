@@ -23,6 +23,8 @@ import com.google.android.gms.maps.OnMapsSdkInitializedCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 
+// Some of this code is based on: https://github.com/JSDumbuya/Voyager
+
 class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
 
     var googleApiKey = BuildConfig.GOOGLE_API_KEY
@@ -30,21 +32,20 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     var defaultPos = LatLng(55.658619, 12.589548) // ITU's location
     val DEFAULT_ZOOM: Float = 15F
 
-    private lateinit var googleMaps: GoogleMap
+    private lateinit var googleMap: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapsInitializer.initialize(
             requireContext(),
-            MapsInitializer.Renderer.LATEST, this // maybe this is where the issue is?
+            MapsInitializer.Renderer.LATEST, this
         )
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
@@ -56,21 +57,17 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
 
     private fun checkPermission() =
         ActivityCompat.checkSelfPermission(
-            requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                    requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
+            requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+        &&
+        ActivityCompat.checkSelfPermission(
+            requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap  ->
-        googleMaps = googleMap // why?????
+        this.googleMap = googleMap // why?????
 
-        // Add a marker in ITU and move the camera
-        // Check if the user has granted location permission
         if (ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Request location permission
             ActivityCompat.requestPermissions(requireActivity(),
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
         } else {
@@ -79,76 +76,40 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, object :
                 LocationListener {
                 override fun onLocationChanged(location: Location) {
-                    // Set the camera position to the user's current location
                     val latLng = LatLng(location.latitude, location.longitude)
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
-                    //googleMaps.isMyLocationEnabled = true
-
                     // Remove the location listener to conserve battery
                     locationManager.removeUpdates(this)
                 }
-
                 override fun onProviderDisabled(provider: String) {}
                 override fun onProviderEnabled(provider: String) {}
                 override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
             })
         }
 
-        /*Firebase.database(DATABASE_URL).reference.apply {
-            keepSynced(true)
-        }.child("experiences").addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    val tempExp = postSnapshot.getValue(Experience::class.java)
-                    val tempPosition =
-                        tempExp?.let { LatLng(it.getLat(), tempExp.getLon()) }
-                    if (tempExp != null) {
-                        tempPosition?.let {
-                            MarkerOptions()
-                                .position(it)
-                                .title(tempExp.name.toString())
-                        }?.let {
-                            googleMap.addMarker(
-                                it
-                            )
-                        }
-                    }
-                }
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                //If post failed, log message
-                Log.d(TAG, "Loadpost: onCancelled")
-            }
-        })*/
-
-        // what's this?
+        // refactor the checkPermission() later, it should not be negated I think
         if (!checkPermission()) {
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isMyLocationButtonEnabled = true
         }
-
     }
 
     companion object {
         private val TAG = MapFragment::class.qualifiedName
     }
 
+    // Can this function be deleted?
     override fun onMapsSdkInitialized(renderer: MapsInitializer.Renderer) {
         when (renderer) {
             MapsInitializer.Renderer.LATEST ->
                 Log.d(
                     TAG,
-                    "The latest version of the renderer is used."
-                )
+                    "The latest version of the renderer is used.")
             MapsInitializer.Renderer.LEGACY ->
                 Log.d(
                     TAG,
-                    "The legacy version of the renderer is used."
-                )
+                    "The legacy version of the renderer is used.")
         }
     }
-
 
 }
