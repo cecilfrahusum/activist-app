@@ -11,7 +11,7 @@
     <color name="light_grey">#FEFEFE</color>
     <color name="medium_grey">#E5E5E5</color>
     <color name="dark_grey">#AEBBCE</color>
-    <color name="bottom_nav_menu">#BCE2FE</color>
+    <color name="menu_bars">#BCE2FE</color>
     <color name="green_button">#AEF3C5</color>
     <color name="blue_button">#BCE2FE</color>
 </resources>

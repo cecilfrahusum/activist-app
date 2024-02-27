@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:menu="@menu/top_menu"
-        android:background="@color/bottom_nav_menu" />
+        android:background="@color/menu_bars"
+        />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -31,7 +32,7 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation_menu"
         app:labelVisibilityMode="unlabeled"
-        android:background="@color/bottom_nav_menu">
+        android:background="@color/menu_bars">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
