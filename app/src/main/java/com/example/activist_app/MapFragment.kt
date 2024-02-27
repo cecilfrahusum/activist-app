@@ -81,7 +81,8 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                 override fun onLocationChanged(location: Location) {
                     // Set the camera position to the user's current location
                     val latLng = LatLng(location.latitude, location.longitude)
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
+                    //googleMaps.isMyLocationEnabled = true
 
                     // Remove the location listener to conserve battery
                     locationManager.removeUpdates(this)
