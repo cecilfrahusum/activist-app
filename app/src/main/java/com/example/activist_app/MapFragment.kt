@@ -22,12 +22,16 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.database.ktx.database
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 
 // Some of this code is based on: https://github.com/JSDumbuya/Voyager
 
 class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
 
     var googleApiKey = BuildConfig.GOOGLE_API_KEY
+    var firebaseURL = BuildConfig.FIREBASE_REALTIME_URL
 
     var defaultPos = LatLng(55.658619, 12.589548) // ITU's location
     val DEFAULT_ZOOM: Float = 15F
@@ -46,6 +50,12 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
+
+        // Test: Writing to the Firebase database
+        val database = Firebase.database(firebaseURL)
+        val myRef = database.getReference("message")
+        myRef.setValue("Hello, World!")
+
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
