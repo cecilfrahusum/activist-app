@@ -54,7 +54,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         // Test: Writing to the Firebase database
         val database = Firebase.database(firebaseURL)
         val myRef = database.getReference("message")
-        myRef.setValue("Hello, World!")
+        myRef.setValue("Test message, is this reaching the database, please?")
 
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
