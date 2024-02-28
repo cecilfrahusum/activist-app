@@ -119,11 +119,13 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         }
     }
 
-    fun setAllMarkers(googleMap: GoogleMap) {
-        for (pin: InfoPin in pinDB.pins) {
+    private fun setAllMarkers(googleMap: GoogleMap) {
+        for (pin in pinDB.pins) {
             googleMap.addMarker(
-                MarkerOptions().position(pin.position)
-                    .title("Info from a friend: ").snippet(pin.message)
+                MarkerOptions()
+                    .position(pin.position)
+                    .title("Info from a friend: ")
+                    .snippet(pin.message)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                     .alpha(0.4f)
             )
