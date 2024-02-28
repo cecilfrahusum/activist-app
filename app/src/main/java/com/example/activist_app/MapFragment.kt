@@ -51,10 +51,10 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
-        // Test: Writing to the Firebase database
-        val database = Firebase.database(firebaseURL)
+        // Example: Writing to the database
+        /*val database = Firebase.database(firebaseURL)
         val myRef = database.getReference("message")
-        myRef.setValue("Test message, is this reaching the database, please?")
+        myRef.setValue("This will write to the database.")*/
 
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
