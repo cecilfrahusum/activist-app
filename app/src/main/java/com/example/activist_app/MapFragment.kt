@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.ViewModelProvider
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -21,7 +22,9 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 
 // Some of this code is based on: https://github.com/JSDumbuya/Voyager
 
@@ -33,6 +36,8 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     val DEFAULT_ZOOM: Float = 15F
 
     private lateinit var googleMap: GoogleMap
+
+    private lateinit var pinDB: PinDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +51,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
+        pinDB = ViewModelProvider(requireActivity())[PinDatabase::class.java]
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
@@ -65,6 +71,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap  ->
         this.googleMap = googleMap // why?????
+        setAllMarkers(googleMap)
 
         if (ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -109,6 +116,17 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                 Log.d(
                     TAG,
                     "The legacy version of the renderer is used.")
+        }
+    }
+
+    fun setAllMarkers(googleMap: GoogleMap) {
+        for (pin: InfoPin in pinDB.pins) {
+            googleMap.addMarker(
+                MarkerOptions().position(pin.position)
+                    .title("Info from a friend: ").snippet(pin.message)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                    .alpha(0.4f)
+            )
         }
     }
 
