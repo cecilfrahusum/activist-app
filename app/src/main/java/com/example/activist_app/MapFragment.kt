@@ -21,9 +21,11 @@ import com.google.android.gms.maps.MapsInitializer
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.OnMapsSdkInitializedCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.database.ktx.database
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Firebase
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.database
 
 // Some of this code is based on: https://github.com/JSDumbuya/Voyager
@@ -51,10 +53,39 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
-        // Example: Writing to the database
-        /*val database = Firebase.database(firebaseURL)
-        val myRef = database.getReference("message")
-        myRef.setValue("This will write to the database.")*/
+        val database = Firebase.database(firebaseURL)
+        val pinsRef = database.getReference("infopins")
+        val positionsRef = database.getReference("positions")
+
+        // add a pin no. 1 as a test (it works)
+        pinsRef.child("1").child("message").setValue("testing for pin no. 1")
+        positionsRef.child("1").child("lat").setValue(55.658619)
+        positionsRef.child("1").child("lng").setValue(55.658619)
+
+        /*pinsReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = dataSnapshot.getValue<String>()
+                setAllMarkers(googleMap)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        })*/
+
+        /*val pinListener = object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val pin = dataSnapshot.getValue<InfoPin>()
+                setAllMarkers(googleMap)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPin:onCancelled", databaseError.toException())
+            }
+        }
+        pinReference.addValueEventListener(pinListener)*/
 
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
@@ -119,6 +150,22 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                 Log.d(
                     TAG,
                     "The legacy version of the renderer is used.")
+        }
+    }
+
+    private fun setAllMarkers(googleMap: GoogleMap) {
+        val pins: ArrayList<InfoPin> = ArrayList()
+        // here: somehow add from database to list ?
+
+        for (pin in pins) {
+            googleMap.addMarker(
+                MarkerOptions()
+                    .position(pin.position)
+                    .title("Info from a friend: ")
+                    .snippet(pin.message)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                    .alpha(0.4f)
+            )
         }
     }
 
