@@ -61,23 +61,43 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         //val dbRef = database.getReference("/")
 
         // add a pin no. 1 as a test (it works)
-        pinsRef.child("1").child("message").setValue("testing for pin no. 1")
+        /*pinsRef.child("1").child("message").setValue("testing for pin no. 1")
         positionsRef.child("1").child("lat").setValue(55.658619)
-        positionsRef.child("1").child("lng").setValue(55.658619)
+        positionsRef.child("1").child("lng").setValue(12.589548)*/
 
-        // Testing that the DB connection works
+        // Testing that the DB connection works for string
         pinsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 val message = dataSnapshot.child("1").child("message").getValue<String>()
-                Toast.makeText(activity, "From database: $message", Toast.LENGTH_LONG)
-                    .show()
                 googleMap.addMarker(
                     MarkerOptions()
-                        .position(LatLng(55.658619,12.589548))
+                        .position(LatLng(55.657839,12.589377))
                         .title("Info from a friend: ")
                         .snippet(message)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                        .alpha(0.4f)
+                )
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        })
+
+        // testing for latLng
+        positionsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val lat = dataSnapshot.child("2").child("lat").getValue<Double>()
+                val lng = dataSnapshot.child("2").child("lng").getValue<Double>()
+                googleMap.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(lat!!,lng!!)) // fix the null case later (maybe)..
+                        .title("Info from a friend: ")
+                        .snippet("testing 1 2 3..")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                         .alpha(0.4f)
                 )
