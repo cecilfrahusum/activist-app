@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -58,7 +57,6 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         val database = Firebase.database(firebaseURL)
         val pinsRef = database.getReference("infopins")
         val positionsRef = database.getReference("positions")
-        //val dbRef = database.getReference("/")
 
         // add a pin no. 1 as a test (it works)
         /*pinsRef.child("1").child("message").setValue("testing for pin no. 1")
@@ -175,34 +173,8 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         }
     }
 
-   /* private fun setMarker(id: String) {
-        googleMap.addMarker(
-            MarkerOptions()
-                .position(id.position)
-                .title("Info from a friend: ")
-                .snippet(id.message)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
-                .alpha(0.4f)
-        )
-    }*/
-
     private fun setAllMarkers(googleMap: GoogleMap) {
 
-
-
-        //val pins: ArrayList<InfoPin> = ArrayList()
-        // here: somehow add from database to list ?
-
-       /* for (pin in pins) {
-            googleMap.addMarker(
-                MarkerOptions()
-                    .position(pin.position)
-                    .title("Info from a friend: ")
-                    .snippet(pin.message)
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
-                    .alpha(0.4f)
-            )
-        }*/
     }
 
 }
