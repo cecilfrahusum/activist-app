@@ -108,54 +108,6 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
             }
         })
 
-        /*positionsRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                //val value = dataSnapshot.child("1").child("message").getValue<String>()
-                //setAllMarkers(googleMap)
-                googleMap.addMarker(
-                    MarkerOptions()
-                        .position(LatLng(55.658619,55.658619))
-                        .title("Info from a friend: ")
-                        .snippet("hello")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
-                        .alpha(0.4f)
-                )
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException())
-            }
-        })*/
-
-        /*pinsRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val value = dataSnapshot.getValue<String>()
-                Log.d(TAG, "data is: $value")
-                //setAllMarkers(googleMap)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Failed to read value.", error.toException())
-            }
-        })*/
-
-        /*val pinListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val pin = dataSnapshot.getValue<InfoPin>()
-                setAllMarkers(googleMap)
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "loadPin:onCancelled", databaseError.toException())
-            }
-        }
-        pinReference.addValueEventListener(pinListener)*/
-
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
