@@ -70,9 +70,17 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                val value = dataSnapshot.child("1").child("message").getValue<String>()
-                Toast.makeText(activity, "From database: $value", Toast.LENGTH_LONG)
+                val message = dataSnapshot.child("1").child("message").getValue<String>()
+                Toast.makeText(activity, "From database: $message", Toast.LENGTH_LONG)
                     .show()
+                googleMap.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(55.658619,12.589548))
+                        .title("Info from a friend: ")
+                        .snippet(message)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                        .alpha(0.4f)
+                )
             }
 
             override fun onCancelled(error: DatabaseError) {
