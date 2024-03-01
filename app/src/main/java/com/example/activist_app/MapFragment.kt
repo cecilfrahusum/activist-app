@@ -6,15 +6,14 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
-
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
@@ -25,8 +24,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.Firebase
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.google.firebase.database.getValue
 
 // Some of this code is based on: https://github.com/JSDumbuya/Voyager
 
@@ -56,18 +58,57 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         val database = Firebase.database(firebaseURL)
         val pinsRef = database.getReference("infopins")
         val positionsRef = database.getReference("positions")
+        //val dbRef = database.getReference("/")
 
         // add a pin no. 1 as a test (it works)
         pinsRef.child("1").child("message").setValue("testing for pin no. 1")
         positionsRef.child("1").child("lat").setValue(55.658619)
         positionsRef.child("1").child("lng").setValue(55.658619)
 
-        /*pinsReference.addValueEventListener(object : ValueEventListener {
+        // Testing that the DB connection works
+        pinsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val value = dataSnapshot.child("1").child("message").getValue<String>()
+                Toast.makeText(activity, "From database: $value", Toast.LENGTH_LONG)
+                    .show()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        })
+
+        /*positionsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                //val value = dataSnapshot.child("1").child("message").getValue<String>()
+                //setAllMarkers(googleMap)
+                googleMap.addMarker(
+                    MarkerOptions()
+                        .position(LatLng(55.658619,55.658619))
+                        .title("Info from a friend: ")
+                        .snippet("hello")
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                        .alpha(0.4f)
+                )
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException())
+            }
+        })*/
+
+        /*pinsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
                 val value = dataSnapshot.getValue<String>()
-                setAllMarkers(googleMap)
+                Log.d(TAG, "data is: $value")
+                //setAllMarkers(googleMap)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -106,6 +147,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap  ->
         this.googleMap = googleMap // why?????
+        //setAllMarkers(googleMap)
 
         if (ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -153,11 +195,25 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         }
     }
 
+   /* private fun setMarker(id: String) {
+        googleMap.addMarker(
+            MarkerOptions()
+                .position(id.position)
+                .title("Info from a friend: ")
+                .snippet(id.message)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                .alpha(0.4f)
+        )
+    }*/
+
     private fun setAllMarkers(googleMap: GoogleMap) {
-        val pins: ArrayList<InfoPin> = ArrayList()
+
+
+
+        //val pins: ArrayList<InfoPin> = ArrayList()
         // here: somehow add from database to list ?
 
-        for (pin in pins) {
+       /* for (pin in pins) {
             googleMap.addMarker(
                 MarkerOptions()
                     .position(pin.position)
@@ -166,7 +222,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                     .alpha(0.4f)
             )
-        }
+        }*/
     }
 
 }
