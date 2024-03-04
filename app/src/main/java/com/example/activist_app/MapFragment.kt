@@ -80,7 +80,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap  ->
         this.googleMap = googleMap // why?????
-        //setAllMarkers(googleMap)
+        googleMap.clear()
 
         if (ActivityCompat.checkSelfPermission(requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
