@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/shareMyLocation"
+        android:title="Share my location"
+        android:enabled="true" />
+
+    <item
+        android:id="@+id/displayOthers"
+        android:title="Display other people's location"
+        android:enabled="true" />
+
+    <item
+        android:id="@+id/placePin"
+        android:title="Place an info pin"
+        android:enabled="true" />
+
+</menu>
