@@ -54,57 +54,12 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
 
-        val database = Firebase.database(firebaseURL)
-        val pinsRef = database.getReference("infopins")
-        val positionsRef = database.getReference("positions")
+        //val database = Firebase.database(firebaseURL)
 
         // add a pin no. 1 as a test (it works)
         /*pinsRef.child("1").child("message").setValue("testing for pin no. 1")
         positionsRef.child("1").child("lat").setValue(55.658619)
         positionsRef.child("1").child("lng").setValue(12.589548)*/
-
-        // Testing that the DB connection works for string
-        pinsRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val message = dataSnapshot.child("1").child("message").getValue<String>()
-                googleMap.addMarker(
-                    MarkerOptions()
-                        .position(LatLng(55.657839,12.589377))
-                        .title("Info from a friend: ")
-                        .snippet(message)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
-                        .alpha(0.4f)
-                )
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Failed to read value.", error.toException())
-            }
-        })
-
-        // testing for latLng
-        positionsRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val lat = dataSnapshot.child("2").child("lat").getValue<Double>()
-                val lng = dataSnapshot.child("2").child("lng").getValue<Double>()
-                googleMap.addMarker(
-                    MarkerOptions()
-                        .position(LatLng(lat!!,lng!!)) // fix the null case later (maybe)..
-                        .title("Info from a friend: ")
-                        .snippet("testing 1 2 3..")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
-                        .alpha(0.4f)
-                )
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "Failed to read value.", error.toException())
-            }
-        })
 
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
@@ -153,6 +108,32 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
             googleMap.isMyLocationEnabled = true
             googleMap.uiSettings.isMyLocationButtonEnabled = true
         }
+
+        Firebase.database(firebaseURL).reference.apply {
+            keepSynced(true)
+        }.child("infopins2").addValueEventListener(object : ValueEventListener  {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var i = 1
+                for (pin in dataSnapshot.children) {
+                    var message = dataSnapshot.child(i.toString()).child("message").getValue<String>()
+                    var lat = dataSnapshot.child(i.toString()).child("position").child("lat").getValue<Double>()
+                    var lng = dataSnapshot.child(i.toString()).child("position").child("lng").getValue<Double>()
+                    googleMap.addMarker(
+                        MarkerOptions()
+                            .position(LatLng(lat!!,lng!!))
+                            .title("Info from a friend: ")
+                            .snippet(message)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+                            .alpha(0.4f)
+                    )
+                    i++ // there must be a way to use the key instead of doing this silly little counter
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d(TAG, "Loadpost: onCancelled")
+            }
+        })
     }
 
     companion object {
