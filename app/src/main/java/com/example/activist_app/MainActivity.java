@@ -16,28 +16,14 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
-    MaterialToolbar topMenu;
     NavigationBarView bottomNavigationView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        topMenu = findViewById(R.id.top_menu);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        topMenu.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId() == R.id.placePin) {
-                    Toast.makeText(getApplicationContext(), "placePin clicked", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                return false;
-            }
-        });
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);

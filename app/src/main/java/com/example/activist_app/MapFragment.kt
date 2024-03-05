@@ -11,6 +11,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -22,13 +24,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import com.google.firebase.database.getValue
-import androidx.lifecycle.ViewModelProvider
 
 // Some of this code is based on: https://github.com/JSDumbuya/Voyager
 
@@ -41,6 +43,8 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     val DEFAULT_ZOOM: Float = 15F
 
     private lateinit var googleMap: GoogleMap
+
+    private lateinit var topMenu: MaterialToolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +73,16 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+        topMenu = requireView().findViewById(R.id.top_menu)
+        topMenu.setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener { item ->
+            if (item.itemId == R.id.placePin) {
+                Toast.makeText(context, "placePin clicked", Toast.LENGTH_LONG)
+                    .show()
+                return@OnMenuItemClickListener true
+            }
+            false
+        })
     }
 
     private fun checkPermission() =
