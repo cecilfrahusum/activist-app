@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -45,6 +46,9 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     private lateinit var googleMap: GoogleMap
 
     private lateinit var topMenu: MaterialToolbar
+    private lateinit var locationManager: LocationManager
+
+    private lateinit var okButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +56,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
             requireContext(),
             MapsInitializer.Renderer.LATEST, this
         )
+
     }
 
     override fun onCreateView(
@@ -73,16 +78,36 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+        locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         topMenu = requireView().findViewById(R.id.top_menu)
         topMenu.setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener { item ->
             if (item.itemId == R.id.placePin) {
-                Toast.makeText(context, "placePin clicked", Toast.LENGTH_LONG)
-                    .show()
+                //Toast.makeText(context, "placePin clicked", Toast.LENGTH_LONG).show()
+                handlePlacePinClick()
                 return@OnMenuItemClickListener true
             }
             false
         })
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun handlePlacePinClick() {
+
+        var currentLatLng: LatLng = LatLng(55.658619,12.589548)
+        googleMap.addMarker(
+            MarkerOptions()
+                .position(currentLatLng)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                .draggable(true)
+        )
+
+        okButton = requireView().findViewById(R.id.ok_button)
+        okButton.visibility = View.VISIBLE
+        okButton.setOnClickListener{
+            Toast.makeText(context, "ok button clicked!", Toast.LENGTH_LONG) .show()
+        }
+
     }
 
     private fun checkPermission() =
@@ -103,7 +128,6 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
         } else {
             // Get the user's current location
-            val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, object :
                 LocationListener {
                 override fun onLocationChanged(location: Location) {
@@ -172,5 +196,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     private fun setAllMarkers(googleMap: GoogleMap) {
 
     }
+
+
 
 }
