@@ -1,8 +1,12 @@
 package com.example.activist_app;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -23,6 +27,17 @@ public class MainActivity extends AppCompatActivity {
 
         topMenu = findViewById(R.id.top_menu);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        topMenu.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.placePin) {
+                    Toast.makeText(getApplicationContext(), "placePin clicked", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
