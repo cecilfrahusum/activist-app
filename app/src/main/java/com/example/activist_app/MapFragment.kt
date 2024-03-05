@@ -108,6 +108,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         okButton.setOnClickListener{
             okButton.visibility = View.GONE
             Toast.makeText(context, "ok button clicked!", Toast.LENGTH_LONG) .show()
+            //
         }
 
     }
