@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -47,6 +48,8 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     private lateinit var googleMap: GoogleMap
 
     private lateinit var topMenu: MaterialToolbar
+    private lateinit var placePinPrompt: TextView
+
     private lateinit var locationManager: LocationManager
 
     private lateinit var okButton: MaterialButton
@@ -107,9 +110,13 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         okButton.visibility = View.VISIBLE
         okButton.setOnClickListener{
             okButton.visibility = View.GONE
+            placePinPrompt.visibility = View.GONE
             Toast.makeText(context, "ok button clicked!", Toast.LENGTH_LONG) .show()
-            //
+
         }
+
+        placePinPrompt = requireView().findViewById(R.id.place_pin_prompt)
+        placePinPrompt.visibility = View.VISIBLE
 
     }
 

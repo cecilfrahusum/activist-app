@@ -14,6 +14,19 @@
         android:background="@color/menu_bars"
         />
 
+    <TextView
+        android:id="@+id/place_pin_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/menu_bars"
+        android:layout_marginLeft="30dp"
+        android:layout_marginBottom="30dp"
+        android:text="Drag the pin to the location you want, then tap 'OK'"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        />
+
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
