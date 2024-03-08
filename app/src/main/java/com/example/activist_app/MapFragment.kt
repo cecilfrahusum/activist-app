@@ -25,14 +25,12 @@ import com.google.android.gms.maps.OnMapsSdkInitializedCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
 import com.google.firebase.database.getValue
@@ -93,6 +91,8 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     @SuppressLint("MissingPermission")
     private fun handlePlacePinClick() {
 
+        /*TODO: Pin should be placed at the user's current location.
+        *  It is currently hardcoded to be placed at ITU. */
         var currentLatLng: LatLng = LatLng(55.658619,12.589548)
         googleMap.addMarker(
             MarkerOptions()
@@ -108,9 +108,10 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         okButton.setOnClickListener{
             handleOkClick()
         }
-
     }
 
+    /*TODO: When 'OK' is clicked, the position of the pin
+       should be saved in a variable. */
     private fun handleOkClick() {
         okButton.visibility = View.GONE
         placePinPrompt.visibility = View.GONE
@@ -130,9 +131,10 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         pinInfoPopup.visibility = View.GONE
     }
 
+    /*TODO: The pin needs to be saved to the database with the
+    *  message and position. */
     private fun addPinToDB(message: String) {
-        //statically adds a pin no. 4, change later
-        //also, adding it crashes the app currently, fix it later :-)
+        //adding it crashes the app currently, fix it later :-)
         /*Firebase.database(firebaseURL).reference.child("infopins2").child("4").child("message").setValue(message)
         Firebase.database(firebaseURL).reference.child("infopins2").child("4").child("position").child("lat").setValue(55.657842)
         Firebase.database(firebaseURL).reference.child("infopins2").child("4").child("position").child("lng").setValue(12.589380)*/
@@ -155,13 +157,13 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
             ActivityCompat.requestPermissions(requireActivity(),
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
         } else {
-            // Get the user's current location
+            // Get the user's current location (?)
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, object :
                 LocationListener {
                 override fun onLocationChanged(location: Location) {
                     val latLng = LatLng(location.latitude, location.longitude)
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
-                    // Remove the location listener to conserve battery
+                    // Remove the location listener to conserve battery (??!)
                     locationManager.removeUpdates(this)
                 }
                 override fun onProviderDisabled(provider: String) {}
@@ -220,6 +222,14 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                     TAG,
                     "The legacy version of the renderer is used.")
         }
+    }
+
+    // Copied from my Sticker App project: https://github.com/cecilfrahusum/sticker-app
+    private fun getRandomLatLngNearITU(): LatLng {
+        return LatLng(
+            (Math.random() * (55.659225 - 55.652872) + 55.652872),
+            (Math.random() * (12.595497 - 12.581437) + 12.581437)
+        )
     }
 
 }
