@@ -49,6 +49,8 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
 
     private lateinit var topMenu: MaterialToolbar
     private lateinit var placePinPrompt: TextView
+    private lateinit var pinInfoPopup: View
+    private lateinit var sendButton: MaterialButton
 
     private lateinit var locationManager: LocationManager
 
@@ -111,7 +113,13 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         okButton.setOnClickListener{
             okButton.visibility = View.GONE
             placePinPrompt.visibility = View.GONE
-            Toast.makeText(context, "ok button clicked!", Toast.LENGTH_LONG) .show()
+            pinInfoPopup = requireView().findViewById(R.id.place_pin_popup)
+            pinInfoPopup.visibility = View.VISIBLE
+            sendButton = requireView().findViewById(R.id.send_button)
+            sendButton.setOnClickListener{
+                Toast.makeText(context, "Your info pin has been shared on the map.", Toast.LENGTH_LONG) .show()
+                pinInfoPopup.visibility = View.GONE
+            }
 
         }
 
