@@ -46,14 +46,12 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
     val DEFAULT_ZOOM: Float = 15F
 
     private lateinit var googleMap: GoogleMap
+    private lateinit var locationManager: LocationManager
 
     private lateinit var topMenu: MaterialToolbar
     private lateinit var placePinPrompt: TextView
     private lateinit var pinInfoPopup: View
     private lateinit var sendButton: MaterialButton
-
-    private lateinit var locationManager: LocationManager
-
     private lateinit var okButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -89,7 +87,6 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         topMenu = requireView().findViewById(R.id.top_menu)
         topMenu.setOnMenuItemClickListener(Toolbar.OnMenuItemClickListener { item ->
             if (item.itemId == R.id.placePin) {
-                //Toast.makeText(context, "placePin clicked", Toast.LENGTH_LONG).show()
                 handlePlacePinClick()
                 return@OnMenuItemClickListener true
             }
@@ -107,7 +104,6 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
                 .draggable(true)
         )
-
         okButton = requireView().findViewById(R.id.ok_button)
         okButton.visibility = View.VISIBLE
         okButton.setOnClickListener{
@@ -117,14 +113,16 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
             pinInfoPopup.visibility = View.VISIBLE
             sendButton = requireView().findViewById(R.id.send_button)
             sendButton.setOnClickListener{
+                addPinToDB()
                 Toast.makeText(context, "Your info pin has been shared on the map.", Toast.LENGTH_LONG) .show()
                 pinInfoPopup.visibility = View.GONE
             }
-
         }
-
         placePinPrompt = requireView().findViewById(R.id.place_pin_prompt)
         placePinPrompt.visibility = View.VISIBLE
+    }
+
+    private fun addPinToDB() {
 
     }
 
@@ -210,11 +208,5 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                     "The legacy version of the renderer is used.")
         }
     }
-
-    private fun setAllMarkers(googleMap: GoogleMap) {
-
-    }
-
-
 
 }
