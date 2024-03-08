@@ -97,7 +97,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         googleMap.addMarker(
             MarkerOptions()
                 .position(currentLatLng)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE))
                 .draggable(true)
         )
 
