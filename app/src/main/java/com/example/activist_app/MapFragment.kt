@@ -41,7 +41,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
 
     var googleApiKey = BuildConfig.GOOGLE_API_KEY
     var firebaseURL = BuildConfig.FIREBASE_REALTIME_URL
-    val DATABASE_INSTANCE_NAME: String = "infopins-itu"
+    val DATABASE_INSTANCE_NAME: String = "infopins2"
 
     var defaultPos = LatLng(55.658619, 12.589548) // ITU's location
     val DEFAULT_ZOOM: Float = 15F
