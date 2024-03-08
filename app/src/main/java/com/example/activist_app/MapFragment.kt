@@ -43,7 +43,6 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
 
     var googleApiKey = BuildConfig.GOOGLE_API_KEY
     var firebaseURL = BuildConfig.FIREBASE_REALTIME_URL
-    //private lateinit var database: DatabaseReference
 
     var defaultPos = LatLng(55.658619, 12.589548) // ITU's location
     val DEFAULT_ZOOM: Float = 15F
@@ -70,14 +69,6 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?): View? {
-
-        //val database = Firebase.database(firebaseURL)
-
-        // add a pin no. 1 as a test (it works)
-        /*pinsRef.child("1").child("message").setValue("testing for pin no. 1")
-        positionsRef.child("1").child("lat").setValue(55.658619)
-        positionsRef.child("1").child("lng").setValue(12.589548)*/
-
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
@@ -85,6 +76,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
         locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         topMenu = requireView().findViewById(R.id.top_menu)
@@ -204,7 +196,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         private val TAG = MapFragment::class.qualifiedName
     }
 
-    // Can this function be deleted?
+    // Can this function be deleted? Nope.
     override fun onMapsSdkInitialized(renderer: MapsInitializer.Renderer) {
         when (renderer) {
             MapsInitializer.Renderer.LATEST ->
