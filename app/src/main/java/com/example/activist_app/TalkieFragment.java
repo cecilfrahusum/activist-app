@@ -5,23 +5,25 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class TalkieFragment extends Fragment {
 
-
     private Button sendButton;
     private Button cancelButton;
     private Button recordButton;
+    private TextView recordingText;
+
     private boolean recording = false;
 
     public TalkieFragment() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +34,10 @@ public class TalkieFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_talkie, container, false);
 
+        recordingText = v.findViewById(R.id.recordingText);
         sendButton = v.findViewById(R.id.sendButton);
-        cancelButton = v.findViewById(R.id.cancelButton);
         recordButton = v.findViewById(R.id.recordButton);
+        cancelButton = v.findViewById(R.id.cancelButton);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,9 +55,6 @@ public class TalkieFragment extends Fragment {
             }
         });
 
-        // TODO: Fix bug: When opening the TalkieFragment, switchButtons() only gets
-        //  executed after clicking twice on recordButton. After initial execution
-        //  it it will execute on a single click.
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,16 +66,19 @@ public class TalkieFragment extends Fragment {
     }
 
     private void switchButtons() {
-        if (recording == true) {
+        if (recording == false) {
+            recordingText.setVisibility(View.VISIBLE);
             sendButton.setVisibility(View.VISIBLE);
             cancelButton.setVisibility(View.VISIBLE);
             recordButton.setVisibility(View.GONE);
-            recording = false;
+            recording = true;
         } else {
+            recordingText.setVisibility(View.INVISIBLE);
             recordButton.setVisibility(View.VISIBLE);
             sendButton.setVisibility(View.GONE);
             cancelButton.setVisibility(View.GONE);
-            recording = true;
+            recording = false;
         }
     }
+
 }

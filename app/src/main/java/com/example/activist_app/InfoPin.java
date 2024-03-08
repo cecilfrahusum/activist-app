@@ -2,6 +2,7 @@ package com.example.activist_app;
 
 import com.google.android.gms.maps.model.LatLng;
 
+// Not currently used, but could be refactored to be used with Firebase
 public class InfoPin {
 
     private LatLng position;

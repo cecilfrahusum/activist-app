@@ -8,6 +8,8 @@ import androidx.core.app.ActivityCompat;
 
 public class PermissionsHandler {
 
+    // TODO: Is this class even used anymore?? Delete if not.
+
     public void requestLocationPermission(Activity activity, int requestCode) {
         ActivityCompat.requestPermissions(activity, new String[]{
                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
