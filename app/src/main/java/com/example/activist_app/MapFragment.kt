@@ -43,6 +43,7 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
 
     var googleApiKey = BuildConfig.GOOGLE_API_KEY
     var firebaseURL = BuildConfig.FIREBASE_REALTIME_URL
+    val DATABASE_INSTANCE_NAME: String = "infopins-itu"
 
     var defaultPos = LatLng(55.658619, 12.589548) // ITU's location
     val DEFAULT_ZOOM: Float = 15F
@@ -99,23 +100,34 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN))
                 .draggable(true)
         )
+
+        placePinPrompt = requireView().findViewById(R.id.place_pin_prompt)
+        placePinPrompt.visibility = View.VISIBLE
         okButton = requireView().findViewById(R.id.ok_button)
         okButton.visibility = View.VISIBLE
         okButton.setOnClickListener{
-            okButton.visibility = View.GONE
-            placePinPrompt.visibility = View.GONE
-            pinInfoPopup = requireView().findViewById(R.id.place_pin_popup)
-            pinInfoPopup.visibility = View.VISIBLE
-            pinInfoEditText = requireView().findViewById(R.id.infopin_edittext)
-            sendButton = requireView().findViewById(R.id.send_button)
-            sendButton.setOnClickListener{
-                addPinToDB(pinInfoEditText.text.toString())
-                Toast.makeText(context, "Your info pin has been shared on the map.", Toast.LENGTH_LONG) .show()
-                pinInfoPopup.visibility = View.GONE
-            }
+            handleOkClick()
         }
-        placePinPrompt = requireView().findViewById(R.id.place_pin_prompt)
-        placePinPrompt.visibility = View.VISIBLE
+
+    }
+
+    private fun handleOkClick() {
+        okButton.visibility = View.GONE
+        placePinPrompt.visibility = View.GONE
+
+        pinInfoPopup = requireView().findViewById(R.id.place_pin_popup)
+        pinInfoPopup.visibility = View.VISIBLE
+        pinInfoEditText = requireView().findViewById(R.id.infopin_edittext)
+        sendButton = requireView().findViewById(R.id.send_button)
+        sendButton.setOnClickListener{
+            handleSendClick()
+        }
+    }
+
+    private fun handleSendClick() {
+        addPinToDB(pinInfoEditText.text.toString())
+        Toast.makeText(context, "Your info pin has been shared on the map.", Toast.LENGTH_LONG) .show()
+        pinInfoPopup.visibility = View.GONE
     }
 
     private fun addPinToDB(message: String) {
@@ -124,7 +136,6 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
         /*Firebase.database(firebaseURL).reference.child("infopins2").child("4").child("message").setValue(message)
         Firebase.database(firebaseURL).reference.child("infopins2").child("4").child("position").child("lat").setValue(55.657842)
         Firebase.database(firebaseURL).reference.child("infopins2").child("4").child("position").child("lng").setValue(12.589380)*/
-
     }
 
     private fun checkPermission() =
@@ -167,8 +178,9 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
 
         Firebase.database(firebaseURL).reference.apply {
             keepSynced(true)
-        }.child("infopins2").addValueEventListener(object : ValueEventListener  {
+        }.child(DATABASE_INSTANCE_NAME).addValueEventListener(object : ValueEventListener  {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                googleMap.clear()
                 var i = 1
                 for (pin in dataSnapshot.children) {
                     var message = dataSnapshot.child(i.toString()).child("message").getValue<String>()
@@ -182,12 +194,12 @@ class MapFragment : Fragment(), OnMapsSdkInitializedCallback {
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
                             .alpha(0.4f)
                     )
-                    i++ // there must be a way to use the key instead of doing this silly little counter
+                    i++ // TODO: there must be a way to use the key instead of doing this silly little counter
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d(TAG, "Loadpost: onCancelled")
+                Log.d(TAG, "onCancelled")
             }
         })
     }
