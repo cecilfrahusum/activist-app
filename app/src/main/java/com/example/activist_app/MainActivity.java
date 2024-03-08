@@ -1,8 +1,12 @@
 package com.example.activist_app;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
@@ -12,16 +16,13 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
 
-    MaterialToolbar topMenu;
     NavigationBarView bottomNavigationView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        topMenu = findViewById(R.id.top_menu);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
