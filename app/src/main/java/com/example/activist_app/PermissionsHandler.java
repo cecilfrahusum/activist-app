@@ -8,7 +8,7 @@ import androidx.core.app.ActivityCompat;
 
 public class PermissionsHandler {
 
-    // Is this class even used anymore?? Delete if not.
+    // TODO: Is this class even used anymore?? Delete if not.
 
     public void requestLocationPermission(Activity activity, int requestCode) {
         ActivityCompat.requestPermissions(activity, new String[]{

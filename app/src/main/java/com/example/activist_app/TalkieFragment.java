@@ -17,6 +17,7 @@ public class TalkieFragment extends Fragment {
     private Button cancelButton;
     private Button recordButton;
     private TextView recordingText;
+
     private boolean recording = false;
 
     public TalkieFragment() {
